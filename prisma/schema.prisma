@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String             @unique
+  passwordHash      String
+  firstName         String?
+  lastName          String?
+  role              UserRole           @default(USER)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  resumes           Resume[]
+  skillGaps         SkillGap[]
+  roadmaps          CareerRoadmap[]
+  interviewSessions InterviewSession[]
+
+  @@map("users")
+}
+
+model Resume {
+  id              String           @id @default(uuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileUrl         String
+  fileKey         String
+  fileName        String
+  extractedText   String?          @db.Text
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  analysisResults AnalysisResult[]
+
+  @@map("resumes")
+}
+
+model AnalysisResult {
+  id              String   @id @default(uuid())
+  resumeId        String
+  resume          Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  score           Int
+  strengths       Json     // Stored as JSON array of strings
+  weaknesses      Json     // Stored as JSON array of strings
+  missingSkills   Json     // Stored as JSON array of strings
+  recommendations Json     // Stored as JSON array of strings
+  rawJson         Json?    // Complete raw response from AI
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("analysis_results")
+}
+
+model SkillGap {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  identifiedGaps  Json     // missing skills with current level and desired level
+  recommendations Json     // courses, certificates, projects
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("skill_gaps")
+}
+
+model CareerRoadmap {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetRole      String
+  steps           Json     // array of steps: [{ title, description, estimatedDuration, resources: [], completed: boolean }]
+  currentProgress Float    @default(0.0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("career_roadmaps")
+}
+
+model InterviewSession {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role            String
+  topic           String
+  questions       Json     // [{ id, questionText, context }]
+  responses       Json?    // [{ questionId, answerText, feedback, score }]
+  overallFeedback String?  @db.Text
+  score           Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("interview_sessions")
+}
