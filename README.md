@@ -1,98 +1,108 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Inzira - Your Intelligent Career Journey 
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**Inzira** is an enterprise-grade, AI-powered career development backend platform designed to improve employability for students and job seekers. The system provides automated resume analysis, ATS compatibility matching, personalized career roadmaps, and interactive AI mock interviews.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Built using **NestJS**, **TypeScript**, **PostgreSQL**, and **Prisma ORM**, the system follows modern, scalable SaaS architectural principles.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ✨ Features
 
-## Project setup
+- 🔑 **Secure Authentication**: JWT-based authentication system using Passport.js, bcrypt password hashing, and role-based access control (`@Roles()` and `@CurrentUser()` decorators).
+- 📄 **Resume Pipeline**: Upload and validate `.pdf` and `.docx` documents. Files are stored securely on Cloudinary, raw text is extracted, metadata is saved, and AI analysis is automatically triggered.
+- 🤖 **AI-Powered Diagnostics**: Resume matching, ATS scoring, strengths/weaknesses identification, and actionable feedback powered by LLM integrations.
+- 🎯 **Skill-Gap Detection**: Compare resume experience against target job descriptions to pinpoint missing skills and suggest learning resources.
+- 🗺️ **Personalized Roadmaps**: Dynamically generated career transition steps. Includes interactive step completion tracking that automatically recalculates overall progression metrics.
+- 🎙️ **AI Mock Interviews**: Generate 5 challenging questions based on a specific role and topic. Submit answers to receive grading, score averages, and detailed feedback.
 
-```bash
-$ npm install
+---
+
+## 🛠️ Tech Stack
+
+- **Backend Framework**: NestJS (v11+)
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Prisma ORM (v7+) with Native Driver Adapters
+- **Authentication**: JWT + Passport.js
+- **Password Hashing**: bcrypt
+- **Validation**: class-validator + DTOs
+- **File Uploads**: Cloudinary API
+- **AI Integration**: OpenAI SDK (compatible with OpenAI, Groq, Ollama, etc.)
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory using the layout from `.env.example`:
+
+```env
+# Database Configuration
+DATABASE_URL="postgresql://username:password@localhost:5432/inzira_db?schema=public"
+
+# Authentication Secrets
+JWT_SECRET="your-super-secure-jwt-key"
+JWT_EXPIRES_IN="1d"
+
+# Cloudinary Credentials
+CLOUDINARY_CLOUD_NAME="your_cloudinary_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+
+# AI Integrations (OpenAI / Groq / Ollama)
+OPENAI_API_KEY="your_api_key_here"
+OPENAI_BASE_URL="https://api.groq.com/openai/v1" # Optional: For Groq or Ollama
+OPENAI_MODEL="llama-3.3-70b-versatile"          # Optional: Model name
 ```
 
-## Compile and run the project
+---
 
+## 🚀 Getting Started
+
+### 1. Install Dependencies
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+### 2. Run Database Migrations
+Apply the Prisma schema to compile the PostgreSQL tables:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npx prisma migrate dev --name init
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 3. Start the Server
+Run the NestJS application in development mode:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
+The server will start at: `http://localhost:3000/api`
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🔌 API Documentation
 
-Check out a few resources that may come in handy when working with NestJS:
+All request payloads are validated using class-validator DTOs. Protected routes require a Bearer token in the header (`Authorization: Bearer <JWT_TOKEN>`).
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Auth Module
+- `POST /api/auth/register` - Create a new account.
+- `POST /api/auth/login` - Authenticate and retrieve access token.
+- `GET /api/users/profile` *(Protected)* - Get current user profile details.
 
-## Support
+### Resume Module
+- `POST /api/resume/upload` *(Protected, multipart/form-data)* - Upload a resume (`file` field). Runs extraction, saves metadata, and auto-generates AI diagnostics.
+- `GET /api/resume/:id` *(Protected)* - Fetch metadata and analysis history.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### AI Diagnostics Module
+- `POST /api/ai/analyze` *(Protected)* - Manually trigger resume analysis.
+- `POST /api/ai/skill-gap` *(Protected)* - Scan latest resume against target role.
+- `POST /api/ai/roadmap` *(Protected)* - Generate career roadmap.
 
-## Stay in touch
+### Roadmap Module
+- `GET /api/roadmap/my-roadmaps` *(Protected)* - List career roadmaps.
+- `GET /api/roadmap/:id` *(Protected)* - Retrieve roadmap steps.
+- `PATCH /api/roadmap/:id/step/:stepIndex` *(Protected)* - Toggle step completion and recalculate progress.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Interview Module
+- `POST /api/interview/start` *(Protected)* - Create session and generate questions.
+- `GET /api/interview/my-sessions` *(Protected)* - Get interview history.
+- `GET /api/interview/:id` *(Protected)* - Get session details.
+- `POST /api/interview/:id/submit` *(Protected)* - Submit answers to evaluate and grade.
