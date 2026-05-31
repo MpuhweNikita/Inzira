@@ -14,7 +14,7 @@ export class ResumesService {
     private readonly aiService: AiService,
   ) {}
 
-  async uploadAndAnalyze(file: Express.Multer.File, user: User): Promise<Resume & { analysis: any }> {
+  async uploadAndAnalyze(file: Express.Multer.File, user: User): Promise<any> {
     // 1. Upload to Cloudinary
     const cloudinaryResponse = await this.cloudinaryService.uploadFile(file, 'inzira_resumes');
 
@@ -50,6 +50,7 @@ export class ResumesService {
 
     return {
       ...resume,
+      analysisResults: [analysisRecord],
       analysis: analysisRecord,
     };
   }

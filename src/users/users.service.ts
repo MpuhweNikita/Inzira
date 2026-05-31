@@ -12,6 +12,22 @@ export class UsersService {
     });
   }
 
+  async findProfile(id: string): Promise<any> {
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        resumes: {
+          include: {
+            analysisResults: {
+              orderBy: { createdAt: 'desc' },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { email: email.toLowerCase() },
